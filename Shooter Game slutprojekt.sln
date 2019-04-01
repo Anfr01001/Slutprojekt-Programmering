@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shooter Game slutprojekt", "Shooter Game slutprojekt\Shooter Game slutprojekt.csproj", "{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}.Debug|x86.ActiveCfg = Debug|x86
+		{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}.Debug|x86.Build.0 = Debug|x86
+		{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}.Release|x86.ActiveCfg = Release|x86
+		{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5DC9C18-A886-421D-83D7-6CF390241BB4}
+	EndGlobalSection
+EndGlobal
