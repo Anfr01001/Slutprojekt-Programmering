@@ -22,6 +22,9 @@ namespace Shooter_Game_slutprojekt {
         //Text
         SpriteFont font;
 
+        //Bakgrund 
+        Texture2D Bakgrund;
+
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
 
@@ -43,8 +46,9 @@ namespace Shooter_Game_slutprojekt {
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
           
-            Player = Content.Load<Texture2D>("Dot"); //-- Temp för spelare
+            Player = Content.Load<Texture2D>("SpelareXwing"); //-- Temp för spelare
             font = Content.Load<SpriteFont>("Ubuntu32"); //-- Fonten för att skriva ut text
+            Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
         }
 
         protected override void UnloadContent() {
@@ -68,6 +72,8 @@ namespace Shooter_Game_slutprojekt {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            //Rita ut bakgrund 
+            spriteBatch.Draw(Bakgrund, new Vector2(0,0), Color.White);
 
             // Rita ut spelaren (med rotation)
             spriteBatch.Draw(Player,PlayerPos,null,null,orgin,PlayerRotation);
@@ -75,7 +81,7 @@ namespace Shooter_Game_slutprojekt {
             // Rita ut text
             spriteBatch.DrawString(font, ("Grader: " + degrees), new Vector2(100, 100), Color.White);
             
-
+;
 
 
             spriteBatch.End();

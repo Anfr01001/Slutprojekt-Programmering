@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/banan/source/repos/Shooter Game slutprojekt/Shooter Game slutprojekt/Content/Ubuntu32.spritefont</SourceFile>
-  <SourceTime>2019-03-14T19:45:22.6856209+01:00</SourceTime>
-  <DestFile>C:/Users/banan/source/repos/Shooter Game slutprojekt/Shooter Game slutprojekt/Content/bin/Windows/Content/Ubuntu32.xnb</DestFile>
-  <DestTime>2019-04-01T20:11:15.2090013+02:00</DestTime>
+  <SourceFile>C:/Users/banan/Source/Repos/Slutprojekt-Programmering/Content/Ubuntu32.spritefont</SourceFile>
+  <SourceTime>2019-04-01T21:34:22.354522+02:00</SourceTime>
+  <DestFile>C:/Users/banan/Source/Repos/Slutprojekt-Programmering/Content/bin/Windows/Content/Ubuntu32.xnb</DestFile>
+  <DestTime>2019-04-01T21:47:08.3429512+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
