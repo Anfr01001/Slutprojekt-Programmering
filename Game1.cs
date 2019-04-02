@@ -12,10 +12,13 @@ namespace Shooter_Game_slutprojekt {
         Texture2D texture;
         Vector2 pos;
         float Rotation;
-        Vector2 orgin = new Vector2(13.5f,4f); //-- Hitta mitten av bilden för att vera var skottet ska rotera runt.
+        Vector2 orgin = new Vector2(23f,13f); //-- Hitta mitten av bilden för att vera var skottet ska rotera runt.
         MouseState MouseState;
         Vector2 direction;
-        float speed = 5;
+        float speed = 6;
+
+        //Hitbox
+        Rectangle skotthitbox;
 
     public Skott(Texture2D texture, Vector2 position,float rot, MouseState MouseState) {
             //När konstruktion kallas vill vi "Få ut variablerna"
@@ -23,18 +26,27 @@ namespace Shooter_Game_slutprojekt {
             pos = position;
             Rotation = rot;
             MouseState = MouseState;
+
+            //Skapa hitbox
+            skotthitbox = new Rectangle((int)pos.X, (int)pos.Y, 8, 8);
     }
+
+    public Rectangle getskottHitbox() { return skotthitbox; }
 
     public void Update(){
         // Gör om spelarens nuvarande rotation till en riktning som sedan används för att flytta skotten.
         direction = new Vector2((float)Math.Cos(Rotation),(float)Math.Sin(Rotation));
         //Flytta skotten och en variabel för fart för att lätt kunna ändra det.
         pos -= direction * speed;
+        skotthitbox.X = (int)pos.X;
+        skotthitbox.Y = (int)pos.Y;
+
     }
 
     public void Draw(SpriteBatch spriteBatch) {
             //Rita ut skottet samma som overloads som spelaren
             spriteBatch.Draw(texture,pos,null,null,orgin,Rotation);
+            //spriteBatch.Draw(texture,new Vector2(skotthitbox.X,skotthitbox.Y), Color.Yellow);
         }
 
     }
@@ -45,14 +57,18 @@ namespace Shooter_Game_slutprojekt {
         float Rotation;
         Vector2 orgin = new Vector2(50,50); //-- Hitta mitten av bilden för att vera var skottet ska rotera runt.
         Vector2 direction;
-        float speed = 5; 
+        float speed = 2; 
         double x, y;
         int angle;
         Random r = new Random();
 
+        //hitbox 
+        Rectangle Fiendehitbox;
+
+        Texture2D TestTex;
+
         public Fiende(Texture2D texture) {
          this.texture = texture;
-
          //----------------------------------------------------------------------------------------------------------
          //Fienden skapas genom att bestämma en slumpald vinkel på en imaginär cirkel runt (utanför) spelplanen   
          //För att sedan ta reda på vilken X och Y värde denna plats på cirklen har.
@@ -71,18 +87,26 @@ namespace Shooter_Game_slutprojekt {
          Rotation = (float)Math.Atan2(pos.Y - 500 , pos.X - 500);
          direction = new Vector2((float)Math.Cos(Rotation),(float)Math.Sin(Rotation));
          
+        //Skapa hitbox
+        Fiendehitbox = new Rectangle((int)pos.X, (int)pos.Y, 70, 70);
+
         }
+
+        public Rectangle getFiendeHitbox() { return Fiendehitbox; }
+
 
         public void Update() {
             pos -= direction * speed; // Gå rakt mot spelaren (direction) som är förutbestämd i konstruktorn
+            Fiendehitbox.X = (int)pos.X;
+            Fiendehitbox.Y = (int)pos.Y; 
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             //Rita ut skottet samma som overloads som spelaren (för att kunna använda rotation)
             spriteBatch.Draw(texture,pos,null,null,orgin,Rotation);
+            //spriteBatch.Draw(texture,new Vector2(Fiendehitbox.X,Fiendehitbox.Y),Color.Red);
         }
     }
-
 
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
@@ -115,7 +139,8 @@ namespace Shooter_Game_slutprojekt {
         double SenaseFiende = 0;
         double TidmellanFiende = 1;
 
-        double temp;
+        //Temp
+        int träff = 0;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -159,28 +184,42 @@ namespace Shooter_Game_slutprojekt {
 
             // Vilken punkt ska karaktären rotera runt (mitten av sig själv)
             orgin = new Vector2(Player.Width / 2f, Player.Height / 2f);
-           
-             //Kollar om användaren klickar om detta sker skapa skott 
-             if(MouseState.LeftButton == ButtonState.Pressed) {
-                Skottlista.Add(new Skott(skott,PlayerPos,PlayerRotation,MouseState)); //-- !Fixa vad skottet utgår från!
-            }
 
-        //Skapar nya fienden om x tid har gått sedan senaste.
-        if(gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
-          SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
-          Fiendelista.Add(new Fiende(fiende));
-        }
-
-        temp = gameTime.TotalGameTime.TotalSeconds;
 
         //Uppdatera skott possition
         for (int i = 0; i < Skottlista.Count; i++) {
                  Skottlista[i].Update();
         }
 
+        //uppdatera fiende positon
         for (int i = 0; i < Fiendelista.Count; i++) {
                  Fiendelista[i].Update();
         }
+
+        //Kollar om något skott har träffat någon Fiende (hitbox)
+        for (int i = 0; i < Skottlista.Count; i++) {
+            for (int j = 0; j < Fiendelista.Count; j++) {
+
+                if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
+                    Fiendelista.RemoveAt(j);
+                    j--;
+                    Skottlista.RemoveAt(i);
+                    i--;     
+                }
+            }                                                              
+        }     
+        
+        //Skapar nya fienden om x tid har gått sedan senaste.
+        if(gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
+          SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
+          Fiendelista.Add(new Fiende(fiende));
+        }
+
+        //Kollar om användaren klickar om detta sker skapa skott 
+        if(MouseState.LeftButton == ButtonState.Pressed) {
+           Skottlista.Add(new Skott(skott,new Vector2(490,490),PlayerRotation,MouseState)); //-- !Fixa vad skottet utgår från!
+        }
+
 
             base.Update(gameTime);
         }
@@ -191,16 +230,18 @@ namespace Shooter_Game_slutprojekt {
             //Rita ut bakgrund 
             spriteBatch.Draw(Bakgrund, new Vector2(0,0), Color.White);
 
-            // Rita ut spelaren (med rotation)
-            spriteBatch.Draw(Player,PlayerPos,null,null,orgin,PlayerRotation);
-
-            // Rita ut text
-            spriteBatch.DrawString(font, ("Temp = " + temp), new Vector2(100, 100), Color.White);
-            
             //Rita ut skott
             foreach (var item in Skottlista) {
                 item.Draw(spriteBatch);
             }
+
+            // Rita ut spelaren (med rotation)
+            spriteBatch.Draw(Player,PlayerPos,null,null,orgin,PlayerRotation);
+
+            // Rita ut text
+            spriteBatch.DrawString(font, träff.ToString() , new Vector2(100, 100), Color.White);
+            
+
 
             //Rita ut Fiende
             foreach (var item in Fiendelista) {

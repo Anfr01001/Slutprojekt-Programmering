@@ -52,3 +52,4 @@ C:\Users\banan\Source\Repos\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game
 C:\Users\banan\Source\Repos\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.exe
 C:\Users\banan\Source\Repos\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.pdb
 C:\Users\banan\Source\Repos\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\SpaceBackground.xnb
+C:\Users\banan\Source\Repos\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\TestBlob.xnb
