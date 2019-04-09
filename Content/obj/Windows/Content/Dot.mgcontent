@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/banan/Source/Repos/Slutprojekt-Programmering/Content/Dot.png</SourceFile>
-  <SourceTime>2019-04-01T21:34:22.3505243+02:00</SourceTime>
+  <SourceTime>2019-04-09T15:33:07.0468257+02:00</SourceTime>
   <DestFile>C:/Users/banan/Source/Repos/Slutprojekt-Programmering/Content/bin/Windows/Content/Dot.xnb</DestFile>
-  <DestTime>2019-04-01T21:47:08.1050873+02:00</DestTime>
+  <DestTime>2019-04-09T15:33:22.3287911+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -38,15 +38,14 @@ namespace Shooter_Game_slutprojekt {
         direction = new Vector2((float)Math.Cos(Rotation),(float)Math.Sin(Rotation));
         //Flytta skotten och en variabel för fart för att lätt kunna ändra det.
         pos -= direction * speed;
-        skotthitbox.X = (int)pos.X;
-        skotthitbox.Y = (int)pos.Y;
+        skotthitbox.X = (int)pos.X -4;
+        skotthitbox.Y = (int)pos.Y -4;
 
     }
 
     public void Draw(SpriteBatch spriteBatch) {
             //Rita ut skottet samma som overloads som spelaren
             spriteBatch.Draw(texture,pos,null,null,orgin,Rotation);
-            //spriteBatch.Draw(texture,new Vector2(skotthitbox.X,skotthitbox.Y), Color.Yellow);
         }
 
     }
@@ -66,8 +65,9 @@ namespace Shooter_Game_slutprojekt {
         Rectangle Fiendehitbox;
 
         Texture2D TestTex;
+        Texture2D Blob;
 
-        public Fiende(Texture2D texture) {
+        public Fiende(Texture2D texture, Texture2D Dot) {
          this.texture = texture;
          //----------------------------------------------------------------------------------------------------------
          //Fienden skapas genom att bestämma en slumpald vinkel på en imaginär cirkel runt (utanför) spelplanen   
@@ -89,7 +89,8 @@ namespace Shooter_Game_slutprojekt {
          
         //Skapa hitbox
         Fiendehitbox = new Rectangle((int)pos.X, (int)pos.Y, 70, 70);
-
+        
+        Blob = Dot; // för test
         }
 
         public Rectangle getFiendeHitbox() { return Fiendehitbox; }
@@ -97,14 +98,16 @@ namespace Shooter_Game_slutprojekt {
 
         public void Update() {
             pos -= direction * speed; // Gå rakt mot spelaren (direction) som är förutbestämd i konstruktorn
-            Fiendehitbox.X = (int)pos.X;
-            Fiendehitbox.Y = (int)pos.Y; 
+            Fiendehitbox.X = (int)pos.X -35; // -35 för att få hitboxen imitten av fienden 
+            Fiendehitbox.Y = (int)pos.Y -35; // -35 för att få hitboxen imitten av fienden 
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             //Rita ut skottet samma som overloads som spelaren (för att kunna använda rotation)
             spriteBatch.Draw(texture,pos,null,null,orgin,Rotation);
-            //spriteBatch.Draw(texture,new Vector2(Fiendehitbox.X,Fiendehitbox.Y),Color.Red);
+            
+            // Visualisera hitboxen med koden under
+            //spriteBatch.Draw(Blob,new Vector2(Fiendehitbox.X - 35,Fiendehitbox.Y - 35),Color.Red);
         }
     }
 
@@ -141,6 +144,7 @@ namespace Shooter_Game_slutprojekt {
 
         //Temp
         int träff = 0;
+        Texture2D Dot;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -168,6 +172,7 @@ namespace Shooter_Game_slutprojekt {
             skott = Content.Load<Texture2D>("Skott"); //-- Skotten som spelaren skjuter
             Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
             fiende = Content.Load<Texture2D>("FiendeTieFighter"); //-- Fiende
+            Dot = Content.Load<Texture2D>("Dot"); // test
         }
 
         protected override void UnloadContent() {
@@ -212,7 +217,7 @@ namespace Shooter_Game_slutprojekt {
         //Skapar nya fienden om x tid har gått sedan senaste.
         if(gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
           SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
-          Fiendelista.Add(new Fiende(fiende));
+          Fiendelista.Add(new Fiende(fiende,Dot));
         }
 
         //Kollar om användaren klickar om detta sker skapa skott 
