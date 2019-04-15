@@ -1,2 +1,0 @@
-C:\Users\banan\Source\Repos\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.csprojAssemblyReference.cache
-C:\Users\banan\Source\Repos\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.csproj.CoreCompileInputs.cache

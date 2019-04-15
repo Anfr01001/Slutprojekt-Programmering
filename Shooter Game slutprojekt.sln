@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shooter Game slutprojekt", "Shooter Game slutprojekt\Shooter Game slutprojekt.csproj", "{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shooter Game slutprojekt", "C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\Shooter Game slutprojekt.csproj", "{ABF82C70-5B3E-4F72-BFCB-CEDFAE4C36D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
