@@ -14,6 +14,7 @@ public class Fiende {
     int angle;
     Random r = new Random();
 
+
     List<Fiende> Fiendelista;
 
     //hitbox 
@@ -56,14 +57,17 @@ public class Fiende {
         pos -= direction * speed; // Gå rakt mot spelaren (direction) som är förutbestämd i konstruktorn
         Fiendehitbox.X = (int)pos.X - 35; // -35 för att få hitboxen imitten av fienden 
         Fiendehitbox.Y = (int)pos.Y - 35; // -35 för att få hitboxen imitten av fienden 
+    }
 
-
+    public bool Träffad(int i) {
+        bool träff = false;
         //Avståndsformeln *Roten ur*(x2 − x1)^2 + (y2 − y1)^2 | Används för att bedömma om en motståndare är nära någ för att anses vara en träff (onödigt att använda hitboxes här)
         // Vi vet att spelarpositonen är fast och är 490, 490
         if (Math.Sqrt(Math.Pow(pos.X - 490, 2) + Math.Pow(pos.Y - 490, 2)) < 50) {
             Fiendelista.RemoveAt(i);
-
+            träff = true;
         }
+        return träff;
     }
 
     public void Draw(SpriteBatch spriteBatch) {

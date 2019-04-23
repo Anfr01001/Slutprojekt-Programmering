@@ -30,3 +30,4 @@ C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.csproj.CopyComplete
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.exe
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\obj\x86\Debug\Shooter Game slutprojekt.pdb
+C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\Font2.xnb

@@ -23,6 +23,7 @@ namespace Shooter_Game_slutprojekt {
 
         //Text
         SpriteFont font;
+        SpriteFont font2;
 
         //Bakgrund 
         Texture2D Bakgrund;
@@ -35,9 +36,23 @@ namespace Shooter_Game_slutprojekt {
         Texture2D fiende;
         List<Fiende> Fiendelista = new List<Fiende>();
         double SenaseFiende = 0;
-        const double TidmellanFiende = 0.01;
+        double TidmellanFiende = 0.01;
 
         Texture2D Dot;
+
+        bool GameOver = true;
+
+        public void RestartGame() {
+            SenaseFiende = 0;
+            TidmellanFiende = 0.1;
+
+            PlayerRotation = 0;
+
+            Fiendelista.Clear();
+            Skottlista.Clear();
+
+            GameOver = false;
+        }
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -62,6 +77,7 @@ namespace Shooter_Game_slutprojekt {
 
             Player = Content.Load<Texture2D>("SpelareXwing"); //-- Temp för spelare
             font = Content.Load<SpriteFont>("Ubuntu32"); //-- Fonten för att skriva ut text
+            font2 = Content.Load<SpriteFont>("Font2"); //-- Ytterligare en font
             skott = Content.Load<Texture2D>("Skott"); //-- Skotten som spelaren skjuter
             Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
             fiende = Content.Load<Texture2D>("FiendeTieFighter"); //-- Fiende
@@ -76,49 +92,60 @@ namespace Shooter_Game_slutprojekt {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Beräkna vilken vingel karaktären ska ha för att "Kolla" mot muspekaren
             MouseState = Mouse.GetState();
-            PlayerRotation = (float)Math.Atan2(PlayerPos.Y - MouseState.Y, PlayerPos.X - MouseState.X);
-            degrees = PlayerRotation * 180 / (float)Math.PI; //-- Lättare att förstå
+            if (!GameOver) {
+                // Beräkna vilken vingel karaktären ska ha för att "Kolla" mot muspekaren
+                PlayerRotation = (float)Math.Atan2(PlayerPos.Y - MouseState.Y, PlayerPos.X - MouseState.X);
+                degrees = PlayerRotation * 180 / (float)Math.PI; //-- Lättare att förstå
 
-            // Vilken punkt ska karaktären rotera runt (mitten av sig själv)
-            orgin = new Vector2(Player.Width / 2f, Player.Height / 2f);
+                // Vilken punkt ska karaktären rotera runt (mitten av sig själv)
+                orgin = new Vector2(Player.Width / 2f, Player.Height / 2f);
 
-            //Uppdatera skott possition
-            for (int i = 0; i < Skottlista.Count; i++) {
-                Skottlista[i].Update(i);
-            }
+                //Uppdatera skott possition
+                for (int i = 0; i < Skottlista.Count; i++) {
+                    Skottlista[i].Update(i);
+                }
 
-            //uppdatera fiende positon
-            for (int i = 0; i < Fiendelista.Count; i++) {
-                Fiendelista[i].Update(i);
-            }
 
-            //Kollar om något skott har träffat någon Fiende (hitbox)
-            for (int i = 0; i < Skottlista.Count; i++) {
-                for (int j = 0; j < Fiendelista.Count; j++) {
+                for (int i = 0; i < Fiendelista.Count; i++) {
+                    //uppdatera fiende positon 
+                    Fiendelista[i].Update(i);
 
-                    if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
-                        Fiendelista.RemoveAt(j);
-                        j--;
-                        Skottlista.RemoveAt(i);
-                        i--;
+                    // kolla om fiende har träffat spelaren.
+                    if (Fiendelista[i].Träffad(i)) {
+                        GameOver = true;
                     }
                 }
+
+
+                //Kollar om något skott har träffat någon Fiende (hitbox)
+                for (int i = 0; i < Skottlista.Count; i++) {
+                    for (int j = 0; j < Fiendelista.Count; j++) {
+
+                        if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
+                            Fiendelista.RemoveAt(j);
+                            j--;
+                            Skottlista.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+
+                //Skapar nya fienden om x tid har gått sedan senaste.
+                if (gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
+                    SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
+                    Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista));
+                }
+
+                //Kollar om användaren klickar om detta sker skapa skott 
+                if (MouseState.LeftButton == ButtonState.Pressed) {
+                    Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
+                }
+            } else {
+                if (MouseState.LeftButton == ButtonState.Pressed) {
+                    RestartGame();
+                }
             }
-
-            //Skapar nya fienden om x tid har gått sedan senaste.
-            if (gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
-                SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
-                Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista));
-            }
-
-            //Kollar om användaren klickar om detta sker skapa skott 
-            if (MouseState.LeftButton == ButtonState.Pressed) {
-                Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
-            }
-
-
             base.Update(gameTime);
         }
 
@@ -136,14 +163,18 @@ namespace Shooter_Game_slutprojekt {
             // Rita ut spelaren (med rotation)
             spriteBatch.Draw(Player, PlayerPos, null, null, orgin, PlayerRotation);
 
-            // Rita ut text
-            spriteBatch.DrawString(font, Skottlista.Count.ToString(), new Vector2(100, 100), Color.White);
-
-
 
             //Rita ut Fiende
             foreach (var item in Fiendelista) {
                 item.Draw(spriteBatch);
+            }
+
+            // Rita ut text
+            spriteBatch.DrawString(font, Skottlista.Count.ToString(), new Vector2(100, 100), Color.White);
+
+            if (GameOver) {
+                spriteBatch.DrawString(font2, "Game over", new Vector2(340, 300), Color.White);
+                spriteBatch.DrawString(font, "Klick to restart", new Vector2(430, 400), Color.White);
             }
 
             spriteBatch.End();

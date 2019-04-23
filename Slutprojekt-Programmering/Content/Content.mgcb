@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:FiendeTieFighter.png
 
+#begin Font2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font2.spritefont
+
 #begin Skott.png
 /importer:TextureImporter
 /processor:TextureProcessor
