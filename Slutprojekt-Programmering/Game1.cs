@@ -42,7 +42,7 @@ namespace Shooter_Game_slutprojekt {
         Texture2D fiende;
         List<Fiende> Fiendelista = new List<Fiende>();
         double SenaseFiende = 0;
-        double TidmellanFiende = 0.01;
+        double TidmellanFiende = 1;
 
         Texture2D Dot;
 
@@ -52,7 +52,7 @@ namespace Shooter_Game_slutprojekt {
 
         public void RestartGame() {
             SenaseFiende = 0;
-            TidmellanFiende = 0.1;
+            TidmellanFiende = 1;
 
             PlayerRotation = 0;
 
@@ -135,13 +135,13 @@ namespace Shooter_Game_slutprojekt {
 
 
                 //Skapar nya fienden om x tid har gått sedan senaste.
-                if (gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
-                    SenaseFiende = gameTime.TotalGameTime.Seconds; //-- uppdatera tiden för senaste fiende
+                if (gameTime.TotalGameTime.TotalSeconds - SenaseFiende > TidmellanFiende) {
+                    SenaseFiende = gameTime.TotalGameTime.TotalSeconds; //-- uppdatera tiden för senaste fiende
                     Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista));
                 }
 
                 // Ge spelaren nya skott efter bestämd tid
-                if (gameTime.TotalGameTime.TotalSeconds - senasteSkottet > 0.5) {
+                if (gameTime.TotalGameTime.TotalSeconds - senasteSkottet > 1.5) {
                     senasteSkottet = gameTime.TotalGameTime.TotalSeconds;
                     if (Skottkvar < 5) {
                         Skottkvar++;
