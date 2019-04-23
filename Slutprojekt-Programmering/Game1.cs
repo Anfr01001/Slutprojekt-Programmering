@@ -33,6 +33,7 @@ namespace Shooter_Game_slutprojekt {
         //Skott 
         Texture2D skott;
         List<Skott> Skottlista = new List<Skott>();
+        List<Skott> SkottTasBort = new List<Skott>();
         int Skottkvar = 5;
         double senasteSkottet = 0;
         int specialattacker = 3;
@@ -109,6 +110,7 @@ namespace Shooter_Game_slutprojekt {
 
             MouseState = Mouse.GetState();
             if (!GameOver) {
+
                 // Beräkna vilken vingel karaktären ska ha för att "Kolla" mot muspekaren
                 PlayerRotation = (float)Math.Atan2(PlayerPos.Y - MouseState.Y, PlayerPos.X - MouseState.X);
                 degrees = PlayerRotation * 180 / (float)Math.PI; //-- Lättare att förstå
@@ -131,21 +133,6 @@ namespace Shooter_Game_slutprojekt {
                     }
                 }
 
-
-                //Kollar om något skott har träffat någon Fiende (hitbox)
-                for (int i = 0; i < Skottlista.Count; i++) {
-                    for (int j = 0; j < Fiendelista.Count; j++) {
-
-                        if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
-                            poäng++;
-
-                            Fiendelista.RemoveAt(j);
-                            j--;
-                            Skottlista.RemoveAt(i);
-                            i--;
-                        }
-                    }
-                }
 
                 //Skapar nya fienden om x tid har gått sedan senaste.
                 if (gameTime.TotalGameTime.Seconds - SenaseFiende > TidmellanFiende) {
@@ -179,9 +166,33 @@ namespace Shooter_Game_slutprojekt {
                     }
                 }
 
-
-
                 OldMouseState = Mouse.GetState();
+
+                //Kollar om något skott har träffat någon Fiende (hitbox)
+                for (int i = 0; i < Skottlista.Count; i++) {
+
+                    for (int j = 0; j < Fiendelista.Count; j++) {
+
+                        if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
+                            poäng++;
+
+
+                            Fiendelista.RemoveAt(j);
+                            j--;
+
+                            if (i > 0) {
+                                Skottlista.RemoveAt(i);
+                                i--;
+                            }
+
+                        }
+                    }
+                }
+
+
+
+
+
             } else {
                 if (MouseState.LeftButton == ButtonState.Pressed) {
                     RestartGame();
@@ -214,6 +225,7 @@ namespace Shooter_Game_slutprojekt {
             spriteBatch.DrawString(font2Liten, "Score: " + poäng, new Vector2(70, 70), Color.White);
             spriteBatch.DrawString(font2Liten, "Skott: " + Skottkvar, new Vector2(70, 90), Color.White);
             spriteBatch.DrawString(font2Liten, "Specialattacker: " + specialattacker, new Vector2(70, 110), Color.White);
+
 
             // Om spelaren har förlorat rita ut följande
             if (GameOver) {
