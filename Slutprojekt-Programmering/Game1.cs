@@ -20,10 +20,12 @@ namespace Shooter_Game_slutprojekt {
 
         // Mus
         MouseState MouseState;
+        MouseState OldMouseState;
 
         //Text
         SpriteFont font;
         SpriteFont font2;
+        SpriteFont font2Liten;
 
         //Bakgrund 
         Texture2D Bakgrund;
@@ -31,6 +33,9 @@ namespace Shooter_Game_slutprojekt {
         //Skott 
         Texture2D skott;
         List<Skott> Skottlista = new List<Skott>();
+        int Skottkvar = 5;
+        double senasteSkottet = 0;
+        int specialattacker = 3;
 
         //Fiende
         Texture2D fiende;
@@ -40,7 +45,9 @@ namespace Shooter_Game_slutprojekt {
 
         Texture2D Dot;
 
-        bool GameOver = true;
+        bool GameOver = false;
+
+        int poäng = 0;
 
         public void RestartGame() {
             SenaseFiende = 0;
@@ -50,6 +57,13 @@ namespace Shooter_Game_slutprojekt {
 
             Fiendelista.Clear();
             Skottlista.Clear();
+
+            poäng = 0;
+
+            Skottkvar = 5;
+            senasteSkottet = 0;
+
+            specialattacker = 3;
 
             GameOver = false;
         }
@@ -78,6 +92,7 @@ namespace Shooter_Game_slutprojekt {
             Player = Content.Load<Texture2D>("SpelareXwing"); //-- Temp för spelare
             font = Content.Load<SpriteFont>("Ubuntu32"); //-- Fonten för att skriva ut text
             font2 = Content.Load<SpriteFont>("Font2"); //-- Ytterligare en font
+            font2Liten = Content.Load<SpriteFont>("font2Liten"); //-- Mindre variant av fonten ovan
             skott = Content.Load<Texture2D>("Skott"); //-- Skotten som spelaren skjuter
             Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
             fiende = Content.Load<Texture2D>("FiendeTieFighter"); //-- Fiende
@@ -106,7 +121,6 @@ namespace Shooter_Game_slutprojekt {
                     Skottlista[i].Update(i);
                 }
 
-
                 for (int i = 0; i < Fiendelista.Count; i++) {
                     //uppdatera fiende positon 
                     Fiendelista[i].Update(i);
@@ -123,6 +137,8 @@ namespace Shooter_Game_slutprojekt {
                     for (int j = 0; j < Fiendelista.Count; j++) {
 
                         if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
+                            poäng++;
+
                             Fiendelista.RemoveAt(j);
                             j--;
                             Skottlista.RemoveAt(i);
@@ -137,10 +153,35 @@ namespace Shooter_Game_slutprojekt {
                     Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista));
                 }
 
-                //Kollar om användaren klickar om detta sker skapa skott 
-                if (MouseState.LeftButton == ButtonState.Pressed) {
-                    Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
+                // Ge spelaren nya skott efter bestämd tid
+                if (gameTime.TotalGameTime.TotalSeconds - senasteSkottet > 0.5) {
+                    senasteSkottet = gameTime.TotalGameTime.TotalSeconds;
+                    if (Skottkvar < 5) {
+                        Skottkvar++;
+                    }
                 }
+
+                //Kollar om användaren klickar och knappen var inte nedtryckt förra gången (så att man inte kan hålla in knappen skjuter för snabbt) kolla också om spelaren har skott.
+                if (MouseState.LeftButton == ButtonState.Pressed && !(OldMouseState.LeftButton == ButtonState.Pressed) && Skottkvar > 0) {
+                    Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
+                    Skottkvar--;
+                }
+
+
+                // Specialattack (skjuter skott åt alla håll)
+                if (MouseState.RightButton == ButtonState.Pressed && !(OldMouseState.RightButton == ButtonState.Pressed) && specialattacker > 0) {
+                    specialattacker--;
+
+                    // Eftersom skotten utgår från spelarens rotation så ändrar jag den genom att göra om grader till radianer och sedan skapa ett skott.
+                    for (int i = 0; i < 360; i += 10) {
+                        PlayerRotation = (i * (float)Math.PI) / 180;
+                        Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
+                    }
+                }
+
+
+
+                OldMouseState = Mouse.GetState();
             } else {
                 if (MouseState.LeftButton == ButtonState.Pressed) {
                     RestartGame();
@@ -169,9 +210,12 @@ namespace Shooter_Game_slutprojekt {
                 item.Draw(spriteBatch);
             }
 
-            // Rita ut text
-            spriteBatch.DrawString(font, Skottlista.Count.ToString(), new Vector2(100, 100), Color.White);
+            // Rita ut text  font2Liten
+            spriteBatch.DrawString(font2Liten, "Score: " + poäng, new Vector2(70, 70), Color.White);
+            spriteBatch.DrawString(font2Liten, "Skott: " + Skottkvar, new Vector2(70, 90), Color.White);
+            spriteBatch.DrawString(font2Liten, "Specialattacker: " + specialattacker, new Vector2(70, 110), Color.White);
 
+            // Om spelaren har förlorat rita ut följande
             if (GameOver) {
                 spriteBatch.DrawString(font2, "Game over", new Vector2(340, 300), Color.White);
                 spriteBatch.DrawString(font, "Klick to restart", new Vector2(430, 400), Color.White);
