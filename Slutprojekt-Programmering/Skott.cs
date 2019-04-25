@@ -29,6 +29,7 @@ class Skott {
 
     public Rectangle getskottHitbox() { return skotthitbox; }
 
+
     public void Update(int i) {
         // Gör om spelarens nuvarande rotation till en riktning som sedan används för att flytta skotten.
         direction = new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation));

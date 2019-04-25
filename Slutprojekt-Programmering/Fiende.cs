@@ -59,6 +59,9 @@ public class Fiende {
         Fiendehitbox.Y = (int)pos.Y - 35; // -35 för att få hitboxen imitten av fienden 
     }
 
+    //Används för att veta vrt explotionen ska vara när fiende blir träffad.
+    public Vector2 getpos() { return new Vector2(Fiendehitbox.X, Fiendehitbox.Y); }
+
     public bool Träffad(int i) {
         bool träff = false;
         //Avståndsformeln *Roten ur*(x2 − x1)^2 + (y2 − y1)^2 | Används för att bedömma om en motståndare är nära någ för att anses vara en träff (onödigt att använda hitboxes här)

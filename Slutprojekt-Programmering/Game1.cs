@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Shooter_Game_slutprojekt {
 
+
     public class Game1 : Game {
 
         GraphicsDeviceManager graphics;
@@ -17,6 +18,7 @@ namespace Shooter_Game_slutprojekt {
         Vector2 orgin;
         float degrees;
         Texture2D Player;
+        int poäng = 0;
 
         // Mus
         MouseState MouseState;
@@ -44,11 +46,14 @@ namespace Shooter_Game_slutprojekt {
         double SenaseFiende = 0;
         double TidmellanFiende = 1;
 
-        Texture2D Dot;
+        Texture2D Dot; // -- bara för test
 
         bool GameOver = false;
 
-        int poäng = 0;
+        // För explotioner
+        Texture2D[] ExplotionerTexture = new Texture2D[16];
+        List<Explotion> Explotioner = new List<Explotion>();
+        int Currentframe;
 
         public void RestartGame() {
             SenaseFiende = 0;
@@ -68,6 +73,7 @@ namespace Shooter_Game_slutprojekt {
 
             GameOver = false;
         }
+
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -98,6 +104,13 @@ namespace Shooter_Game_slutprojekt {
             Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
             fiende = Content.Load<Texture2D>("FiendeTieFighter"); //-- Fiende
             Dot = Content.Load<Texture2D>("Dot"); // test
+
+            // För att spara plats fenineras alla 16 explotions biler (som senare funkar som en gif)i en loop.
+            for (int i = 1; i < 16; i++) {
+                //eftersom alla bilder heter lika dant med olika siffror på sluter blir det lätt att hitta dem.
+                ExplotionerTexture[i] = Content.Load<Texture2D>("explotion" + i);
+            }
+
         }
 
         protected override void UnloadContent() {
@@ -123,6 +136,17 @@ namespace Shooter_Game_slutprojekt {
                     Skottlista[i].Update(i);
                 }
 
+                //Uppdatera Explotioner
+                for (int i = 0; i < Explotioner.Count; i++) {
+                    //kombinaton av att kalla på uppdatera funktionen och få ut vilken "Frame" den är på för att kunna ta bort den om animationen är slut
+                    Currentframe = Explotioner[i].Update(gameTime);
+                    if (Currentframe >= 16) {
+                        Explotioner.RemoveAt(i);
+                        i--;
+                    }
+
+                }
+
                 for (int i = 0; i < Fiendelista.Count; i++) {
                     //uppdatera fiende positon 
                     Fiendelista[i].Update(i);
@@ -141,8 +165,8 @@ namespace Shooter_Game_slutprojekt {
                 }
 
                 // Ge spelaren nya skott efter bestämd tid
-                if (gameTime.TotalGameTime.TotalSeconds - senasteSkottet > 1.5) {
-                    senasteSkottet = gameTime.TotalGameTime.TotalSeconds;
+                if (gameTime.TotalGameTime.TotalSeconds - senasteSkottet > 1) {
+                    senasteSkottet = gameTime.TotalGameTime.TotalSeconds; //-- uppdatera tiden för senaste skott
                     if (Skottkvar < 5) {
                         Skottkvar++;
                     }
@@ -176,6 +200,7 @@ namespace Shooter_Game_slutprojekt {
                         if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
                             poäng++;
 
+                            Explotioner.Add(new Explotion(ExplotionerTexture, Fiendelista[j].getpos()));
 
                             Fiendelista.RemoveAt(j);
                             j--;
@@ -184,16 +209,13 @@ namespace Shooter_Game_slutprojekt {
                                 Skottlista.RemoveAt(i);
                                 i--;
                             }
-
                         }
                     }
                 }
 
 
-
-
-
             } else {
+                // Kommer bara köras när game over är true och kollar om spaleren klikar (altså vill spelaren starta om spelet)
                 if (MouseState.LeftButton == ButtonState.Pressed) {
                     RestartGame();
                 }
@@ -218,6 +240,11 @@ namespace Shooter_Game_slutprojekt {
 
             //Rita ut Fiende
             foreach (var item in Fiendelista) {
+                item.Draw(spriteBatch);
+            }
+
+            //Rita ut eventuella explotioner
+            foreach (var item in Explotioner) {
                 item.Draw(spriteBatch);
             }
 
