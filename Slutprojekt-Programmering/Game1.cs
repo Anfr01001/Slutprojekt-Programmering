@@ -48,7 +48,9 @@ namespace Shooter_Game_slutprojekt {
 
         Texture2D Dot; // -- bara för test
 
+
         bool GameOver = false;
+        bool Startmeny = true;
 
         // För explotioner
         Texture2D[] ExplotionerTexture = new Texture2D[16];
@@ -78,6 +80,7 @@ namespace Shooter_Game_slutprojekt {
             specialattacker = 3;
 
             GameOver = false;
+            Startmeny = false;
         }
 
 
@@ -127,7 +130,7 @@ namespace Shooter_Game_slutprojekt {
                 Exit();
 
             MouseState = Mouse.GetState();
-            if (!GameOver) {
+            if (!GameOver && !Startmeny) {
 
                 // Beräkna vilken vingel karaktären ska ha för att "Kolla" mot muspekaren
                 PlayerRotation = (float)Math.Atan2(PlayerPos.Y - MouseState.Y, PlayerPos.X - MouseState.X);
@@ -270,9 +273,13 @@ namespace Shooter_Game_slutprojekt {
                 spriteBatch.DrawString(font, "Topplista", new Vector2(430, 550), Color.Orange);
                 spriteBatch.DrawString(font, "1st: " + BestScore[0], new Vector2(430, 570), Color.Orange);
                 spriteBatch.DrawString(font, "2nd: " + BestScore[1], new Vector2(430, 590), Color.Orange);
-                spriteBatch.DrawString(font, "3d: " + BestScore[2], new Vector2(430, 610), Color.Orange);
+                spriteBatch.DrawString(font, "3rd: " + BestScore[2], new Vector2(430, 610), Color.Orange);
+            }
 
-
+            if (Startmeny) {
+                spriteBatch.DrawString(font2, "Andres space shooter spel", new Vector2(140, 300), Color.Yellow);
+                spriteBatch.DrawString(font, "Sikta med muspekaren, Skjut med vansterknapp special attack med hogerknapp", new Vector2(220, 400), Color.White);
+                spriteBatch.DrawString(font, "Klick to Start", new Vector2(450, 420), Color.White);
             }
 
             spriteBatch.End();
