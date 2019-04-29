@@ -55,7 +55,13 @@ namespace Shooter_Game_slutprojekt {
         List<Explotion> Explotioner = new List<Explotion>();
         int Currentframe;
 
+        // För scoreboard
+        List<int> BestScore = new List<int>();
+        ScoreSystem ScoreSystem = new ScoreSystem();
+
+
         public void RestartGame() {
+
             SenaseFiende = 0;
             TidmellanFiende = 1;
 
@@ -85,7 +91,6 @@ namespace Shooter_Game_slutprojekt {
 
             Content.RootDirectory = "Content";
         }
-
 
         protected override void Initialize() {
 
@@ -154,6 +159,7 @@ namespace Shooter_Game_slutprojekt {
                     // kolla om fiende har träffat spelaren.
                     if (Fiendelista[i].Träffad(i)) {
                         GameOver = true;
+                        ScoreSystem.UpdateraScoreLista(poäng.ToString());
                     }
                 }
 
@@ -253,11 +259,20 @@ namespace Shooter_Game_slutprojekt {
             spriteBatch.DrawString(font2Liten, "Skott: " + Skottkvar, new Vector2(70, 90), Color.White);
             spriteBatch.DrawString(font2Liten, "Specialattacker: " + specialattacker, new Vector2(70, 110), Color.White);
 
-
             // Om spelaren har förlorat rita ut följande
             if (GameOver) {
-                spriteBatch.DrawString(font2, "Game over", new Vector2(340, 300), Color.White);
+                spriteBatch.DrawString(font2, "Game over", new Vector2(340, 300), Color.Yellow);
                 spriteBatch.DrawString(font, "Klick to restart", new Vector2(430, 400), Color.White);
+
+
+                //Rita ut score lista;
+                BestScore = ScoreSystem.getScoreLista();
+                spriteBatch.DrawString(font, "Topplista", new Vector2(430, 550), Color.Orange);
+                spriteBatch.DrawString(font, "1st: " + BestScore[0], new Vector2(430, 570), Color.Orange);
+                spriteBatch.DrawString(font, "2nd: " + BestScore[1], new Vector2(430, 590), Color.Orange);
+                spriteBatch.DrawString(font, "3d: " + BestScore[2], new Vector2(430, 610), Color.Orange);
+
+
             }
 
             spriteBatch.End();
