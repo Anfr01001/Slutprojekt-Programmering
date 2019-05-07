@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Fiende {
     Texture2D texture;
+    Texture2D shield;
     Vector2 pos;
     float Rotation;
     Vector2 orgin = new Vector2(50, 50); //-- Hitta mitten av bilden för att vera var skottet ska rotera runt.
@@ -13,6 +14,7 @@ public class Fiende {
     double x, y;
     int angle;
     Random r = new Random();
+    bool Harshield;
 
 
     List<Fiende> Fiendelista;
@@ -22,8 +24,16 @@ public class Fiende {
 
     Texture2D Blob;
 
-    public Fiende(Texture2D texture, Texture2D Dot, List<Fiende> flista) {
+    public Fiende(Texture2D texture, Texture2D Dot, List<Fiende> flista, Texture2D shieldtex, bool SkaHashield) {
         this.texture = texture;
+        shield = shieldtex;
+
+        if (SkaHashield) {
+            Harshield = true;
+        } else {
+            Harshield = false;
+        }
+
         //----------------------------------------------------------------------------------------------------------
         //Fienden skapas genom att bestämma en slumpald vinkel på en imaginär cirkel runt (utanför) spelplanen   
         //För att sedan ta reda på vilken X och Y värde denna plats på cirklen har.
@@ -73,9 +83,17 @@ public class Fiende {
         return träff;
     }
 
+    public bool Getshield() { return Harshield; }
+    public void Removeshield() { Harshield = false; }
+
     public void Draw(SpriteBatch spriteBatch) {
         //Rita ut skottet samma som overloads som spelaren (för att kunna använda rotation)
         spriteBatch.Draw(texture, pos, null, null, orgin, Rotation);
+
+        //Om Fiende har en sköld ska den ritas ut på samma plats som fienden 
+        if (Harshield) {
+            spriteBatch.Draw(shield, pos, null, null, orgin, Rotation);
+        }
 
         // Visualisera hitboxen med koden under
         //spriteBatch.Draw(Blob,new Vector2(Fiendehitbox.X - 35,Fiendehitbox.Y - 35),Color.Red);

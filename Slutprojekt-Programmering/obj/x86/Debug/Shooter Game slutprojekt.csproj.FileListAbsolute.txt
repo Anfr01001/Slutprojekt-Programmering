@@ -48,3 +48,5 @@ C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\explotion7.xnb
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\explotion8.xnb
 C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\explotion9.xnb
+C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\shield110x110.xnb
+C:\Users\banan\source\repos\Slutprojekt-Programmering\Slutprojekt-Programmering\bin\Windows\x86\Debug\Content\shield100x100.xnb

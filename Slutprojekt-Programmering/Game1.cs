@@ -12,6 +12,8 @@ namespace Shooter_Game_slutprojekt {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Random r = new Random();
+
         // Spelarens karaktär variabler
         Vector2 PlayerPos = new Vector2(490, 490);
         float PlayerRotation = 0;
@@ -45,6 +47,9 @@ namespace Shooter_Game_slutprojekt {
         List<Fiende> Fiendelista = new List<Fiende>();
         double SenaseFiende = 0;
         double TidmellanFiende = 1;
+        Texture2D Fiendeshield;
+        bool SkaHaShield;
+
 
         Texture2D Dot; // -- bara för test
 
@@ -112,6 +117,7 @@ namespace Shooter_Game_slutprojekt {
             Bakgrund = Content.Load<Texture2D>("SpaceBackground"); //-- Bakgrund
             fiende = Content.Load<Texture2D>("FiendeTieFighter"); //-- Fiende
             Dot = Content.Load<Texture2D>("Dot"); // test
+            Fiendeshield = Content.Load<Texture2D>("shield100x100");
 
             // För att spara plats fenineras alla 16 explotions biler (som senare funkar som en gif)i en loop.
             for (int i = 1; i < 16; i++) {
@@ -170,7 +176,15 @@ namespace Shooter_Game_slutprojekt {
                 //Skapar nya fienden om x tid har gått sedan senaste.
                 if (gameTime.TotalGameTime.TotalSeconds - SenaseFiende > TidmellanFiende) {
                     SenaseFiende = gameTime.TotalGameTime.TotalSeconds; //-- uppdatera tiden för senaste fiende
-                    Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista));
+
+                    //Bestämer om finde som skapas ska ha en sköld. (behöver 2 träffar för att dödas)
+                    if (r.Next(0, 6) == 1) {
+                        SkaHaShield = true;
+                    } else {
+                        SkaHaShield = false;
+                    }
+
+                    Fiendelista.Add(new Fiende(fiende, Dot, Fiendelista, Fiendeshield, SkaHaShield));
                 }
 
                 // Ge spelaren nya skott efter bestämd tid
@@ -195,6 +209,7 @@ namespace Shooter_Game_slutprojekt {
                     // Eftersom skotten utgår från spelarens rotation så ändrar jag den genom att göra om grader till radianer och sedan skapa ett skott.
                     for (int i = 0; i < 360; i += 10) {
                         PlayerRotation = (i * (float)Math.PI) / 180;
+
                         Skottlista.Add(new Skott(skott, new Vector2(490, 490), PlayerRotation, Skottlista));
                     }
                 }
@@ -207,17 +222,26 @@ namespace Shooter_Game_slutprojekt {
                     for (int j = 0; j < Fiendelista.Count; j++) {
 
                         if (Fiendelista[j].getFiendeHitbox().Intersects(Skottlista[i].getskottHitbox())) {
-                            poäng++;
 
-                            Explotioner.Add(new Explotion(ExplotionerTexture, Fiendelista[j].getpos()));
+                            //Kolla om fiende har sköld om den har det ta bort den pga träffad fiende annars ta bort spelaren
+                            if (Fiendelista[j].Getshield()) {
+                                Fiendelista[j].Removeshield();
+                            } else {
 
-                            Fiendelista.RemoveAt(j);
-                            j--;
+                                poäng++;
+
+                                //Skapar en explotion med hjälp av explotion klassen.
+                                Explotioner.Add(new Explotion(ExplotionerTexture, Fiendelista[j].getpos()));
+
+                                Fiendelista.RemoveAt(j);
+                                j--;
+                            }
 
                             if (i > 0) {
                                 Skottlista.RemoveAt(i);
                                 i--;
                             }
+
                         }
                     }
                 }

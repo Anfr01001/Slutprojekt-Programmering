@@ -24,6 +24,8 @@
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/FiendeTieFighter.png</File>
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/Font2.spritefont</File>
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/font2Liten.spritefont</File>
+    <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/shield100x100.png</File>
+    <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/shield110x110.png</File>
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/Skott.png</File>
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/SpaceBackground.jpg</File>
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/SpelareXwing.png</File>
@@ -31,6 +33,8 @@
     <File>C:/Users/banan/source/repos/Slutprojekt-Programmering/Slutprojekt-Programmering/Content/Ubuntu32.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
