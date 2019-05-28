@@ -3,13 +3,12 @@ using System.IO;
 
 class ScoreSystem {
 
-    /*
-     * Här söts allt gällande topplistan som kan ses i slutet.
-     * Eftersom jag vill att spelarens resultat ska bli kvar även efter omstart av spel sparas listan i ett textdokument.
-     * Alla resultat sparas och sedan tas de bästa ut med hjälp av koden.
-     * 
-     * Koden tar ut resultaten med hjälp at "|" täcken som är plaserade efter värje nytt score. så själva listan ser ut ex. |56|87|8|12|77|
-     */
+    /// <summary>  
+    /// Här söts allt gällande topplistan som kan ses i slutet.
+    ///Eftersom jag vill att spelarens resultat ska bli kvar även efter omstart av spel sparas listan i ett textdokument.
+    ///Alla resultat sparas och sedan tas de bästa ut med hjälp av koden.  
+    ///Koden tar ut resultaten med hjälp at "|" täcken som är plaserade efter värje nytt score. så själva listan ser ut ex. |56|87|8|12|77|
+    /// </summary>
 
     string tempScoreboard;
     List<int> BestScore = new List<int>();
