@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-// Denna klassen har hand om explotionerna som sker när en fiende skjuts.
-
+/// <summary>  
+///  Denna klassen har hand om explotionerna som sker när en fiende skjuts.
+///  Den ritar ut bilder med 0.04 sekunders mellanrum för att få det att se ut som en rörande explotion.
+/// </summary> 
 class Explotion {
     Texture2D[] Textures;
     Vector2 pos;
