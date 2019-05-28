@@ -2,7 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-
+/// <summary>  
+///  Den här klassen styr allt gällande fiender
+///  den har hand om hur de rör sig, skapas och hjälp metoder för att kolla om att de är träffade.
+/// </summary>
 public class Fiende {
     Texture2D texture;
     Texture2D shield;
