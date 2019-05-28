@@ -2,7 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-
+/// <summary>  
+///  Den här klassen styr skottens postion hur och vart de ska skapas.
+///  Den styr också hur skotten ska vara roterade för att se realistiskt ut.
+/// </summary> 
 class Skott {
 
     Texture2D texture;
